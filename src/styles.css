@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #060c07;
+  --color-emerald: #10b981;
+  --color-emerald-light: #6ee7b7;
+  --color-green: #22c55e;
+  --color-teal: #14b8a6;
+  --color-teal-light: #5eead4;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+body {
+  background-color: #060c07;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+}
