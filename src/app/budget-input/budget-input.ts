@@ -4,7 +4,7 @@ import { Component, model } from '@angular/core';
   selector: 'app-budget-input',
   template: `
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium text-emerald-light">Budżet (zł)</label>
+      <label class="text-sm font-medium">Budżet (zł)</label>
       <div class="relative">
         <input
           type="number"

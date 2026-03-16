@@ -9,7 +9,7 @@ import { AddExpenseComponent } from './add-expense/add-expense';
   selector: 'app-root',
   imports: [BudgetInputComponent, BudgetSummaryComponent, ExpenseItemComponent, AddExpenseComponent],
   template: `
-    <div class="min-h-screen px-4 py-10 flex flex-col items-center justify-center" style="background-color: #060c07">
+    <div class="min-h-screen px-4 py-10 flex flex-col items-center justify-center" style="background-color: #090e0b">
       <!-- Ambient glow -->
       <div class="fixed inset-0 pointer-events-none overflow-hidden">
         <div class="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-10"
@@ -29,7 +29,7 @@ import { AddExpenseComponent } from './add-expense/add-expense';
 
         <!-- Expenses -->
         <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
-          <h2 class="text-sm font-semibold text-white/60 uppercase tracking-wide">Wydatki</h2>
+          <h2 class="text-sm font-semibold text-white">Wydatki</h2>
 
           @if (expenses().length === 0) {
             <p class="text-white/30 text-sm text-center py-4">Brak wydatków</p>
@@ -54,7 +54,7 @@ import { AddExpenseComponent } from './add-expense/add-expense';
   `,
   styles: `
     .glass-panel {
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
   `

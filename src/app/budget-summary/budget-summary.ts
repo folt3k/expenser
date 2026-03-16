@@ -26,7 +26,7 @@ import { DecimalPipe } from '@angular/common';
   `,
   styles: `
     .glass-card {
-      background: rgba(0, 0, 0, 0.45);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
   `,

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #060c07;
+  --color-bg: #090e0b;
   --color-emerald: #10b981;
   --color-emerald-light: #6ee7b7;
   --color-green: #22c55e;
@@ -20,7 +20,7 @@ input[type=number] {
 }
 
 body {
-  background-color: #060c07;
+  background-color: #090e0b;
   color: #ffffff;
   font-family: system-ui, -apple-system, sans-serif;
   min-height: 100vh;
