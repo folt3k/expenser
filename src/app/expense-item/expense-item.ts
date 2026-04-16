@@ -121,9 +121,9 @@ export class ExpenseItemComponent {
 
   expense = input.required<Expense>();
   index = input.required<number>();
-  toggleHidden = output<number>();
-  remove = output<number>();
-  edit = output<{ id: number; amount: number; name?: string }>();
+  toggleHidden = output<string>();
+  remove = output<string>();
+  edit = output<{ id: string; amount: number; name?: string }>();
 
   editing = signal(false);
   editName = '';
