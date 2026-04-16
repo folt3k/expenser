@@ -8,7 +8,7 @@ import { Expense } from '../models/expense.model';
   template: `
     <div
       class="flex items-center gap-3 glass-card rounded-xl px-4 py-3 transition-all"
-      [class.opacity-40]="expense().hidden && !editing()"
+      [class.opacity-40]="expense().completed && !editing()"
     >
       <span class="text-white/40 text-sm w-5">{{ index() + 1 }}.</span>
 
@@ -55,11 +55,29 @@ import { Expense } from '../models/expense.model';
           </svg>
         </button>
       } @else {
-        <div class="flex-1 flex flex-col" [class.line-through]="expense().hidden">
+        <div class="flex-1 flex flex-col">
           @if (expense().name) {
-            <span class="text-white/70 text-sm">{{ expense().name }}</span>
+            <span class="text-white/70 text-sm flex items-center gap-1.5" [class.line-through]="expense().completed">
+              {{ expense().name }}
+              @if (expense().completed) {
+                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500 no-underline" title="Zrealizowany">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+              }
+            </span>
           }
-          <span class="text-white text-sm font-semibold">{{ expense().amount | number: '1.2-2' }} zł</span>
+          <span class="text-white text-sm font-semibold flex items-center gap-1.5" [class.line-through]="expense().completed">
+            {{ expense().amount | number: '1.2-2' }} zł
+            @if (expense().completed && !expense().name) {
+              <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-emerald-500 no-underline" title="Zrealizowany">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+            }
+          </span>
         </div>
 
         <button
@@ -74,27 +92,19 @@ import { Expense } from '../models/expense.model';
         </button>
 
         <button
-          (click)="toggleHidden.emit(expense().id)"
-          class="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-all"
-          [title]="expense().hidden ? 'Pokaż wydatek' : 'Ukryj wydatek'"
+          (click)="toggleCompleted.emit(expense().id)"
+          class="p-1.5 rounded-lg transition-all"
+          [class.text-emerald-400]="expense().completed"
+          [class.hover:text-emerald-300]="expense().completed"
+          [class.hover:bg-emerald-500/10]="expense().completed"
+          [class.text-white/40]="!expense().completed"
+          [class.hover:text-emerald-400]="!expense().completed"
+          [class.hover:bg-white/10]="!expense().completed"
+          [title]="expense().completed ? 'Oznacz jako niezrealizowany' : 'Oznacz jako zrealizowany'"
         >
-          @if (expense().hidden) {
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7
-                   a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243
-                   M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29
-                   M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7
-                   a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-            </svg>
-          } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7
-                   -1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-          }
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
         </button>
 
         <button
@@ -121,7 +131,7 @@ export class ExpenseItemComponent {
 
   expense = input.required<Expense>();
   index = input.required<number>();
-  toggleHidden = output<string>();
+  toggleCompleted = output<string>();
   remove = output<string>();
   edit = output<{ id: string; amount: number; name?: string }>();
 

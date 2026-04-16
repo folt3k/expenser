@@ -50,11 +50,11 @@ import { ExpensesService } from './services/expenses.service';
               <p class="text-white/30 text-sm text-center py-4">Brak wydatków</p>
             } @else {
               <div class="flex flex-col gap-2">
-                @for (expense of expenses(); track expense.id; let i = $index) {
+                @for (expense of sortedExpenses(); track expense.id; let i = $index) {
                   <app-expense-item
                     [expense]="expense"
                     [index]="i"
-                    (toggleHidden)="toggleHidden($event)"
+                    (toggleCompleted)="toggleCompleted($event)"
                     (remove)="removeExpense($event)"
                     (edit)="editExpense($event)"
                   />
@@ -84,10 +84,15 @@ export class AppComponent {
   expenses = signal<Expense[]>([]);
 
   totalSpent = computed(() =>
-    this.expenses()
-      .filter(e => !e.hidden)
-      .reduce((sum, e) => sum + e.amount, 0),
+    this.expenses().reduce((sum, e) => sum + e.amount, 0),
   );
+
+  sortedExpenses = computed(() => {
+    const list = this.expenses();
+    const pending = list.filter(e => !e.completed);
+    const completed = list.filter(e => e.completed);
+    return [...pending, ...completed];
+  });
 
   private budgetSaveTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -132,14 +137,14 @@ export class AppComponent {
     }
   }
 
-  async toggleHidden(id: string) {
+  async toggleCompleted(id: string) {
     const current = this.expenses().find(e => e.id === id);
     if (!current) return;
-    const newHidden = !current.hidden;
+    const newCompleted = !current.completed;
     try {
-      await this.expensesService.toggleHidden(id, newHidden);
+      await this.expensesService.toggleCompleted(id, newCompleted);
       this.expenses.update(list =>
-        list.map(e => (e.id === id ? { ...e, hidden: newHidden } : e)),
+        list.map(e => (e.id === id ? { ...e, completed: newCompleted } : e)),
       );
     } catch (err) {
       console.error(err);

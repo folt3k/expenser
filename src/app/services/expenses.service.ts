@@ -7,7 +7,7 @@ interface ExpenseRow {
   id: string;
   amount: number;
   name: string | null;
-  hidden: boolean;
+  completed: boolean;
 }
 
 function toExpense(row: ExpenseRow): Expense {
@@ -15,7 +15,7 @@ function toExpense(row: ExpenseRow): Expense {
     id: row.id,
     amount: Number(row.amount),
     name: row.name ?? undefined,
-    hidden: row.hidden,
+    completed: row.completed,
   };
 }
 
@@ -30,7 +30,7 @@ export class ExpensesService {
 
     const { data, error } = await this.supabase.client
       .from('expenses')
-      .select('id, amount, name, hidden')
+      .select('id, amount, name, completed')
       .eq('user_id', userId)
       .order('created_at', { ascending: true });
 
@@ -49,7 +49,7 @@ export class ExpensesService {
         amount: input.amount,
         name: input.name ?? null,
       })
-      .select('id, amount, name, hidden')
+      .select('id, amount, name, completed')
       .single();
 
     if (error) throw error;
@@ -68,17 +68,17 @@ export class ExpensesService {
       .from('expenses')
       .update(patch)
       .eq('id', id)
-      .select('id, amount, name, hidden')
+      .select('id, amount, name, completed')
       .single();
 
     if (error) throw error;
     return toExpense(data);
   }
 
-  async toggleHidden(id: string, hidden: boolean): Promise<void> {
+  async toggleCompleted(id: string, completed: boolean): Promise<void> {
     const { error } = await this.supabase.client
       .from('expenses')
-      .update({ hidden })
+      .update({ completed })
       .eq('id', id);
 
     if (error) throw error;

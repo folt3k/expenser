@@ -26,7 +26,7 @@ create table public.expenses (
   user_id uuid not null references auth.users(id) on delete cascade,
   amount numeric(12,2) not null check (amount >= 0),
   name text,
-  hidden boolean not null default false,
+  completed boolean not null default false,
   created_at timestamptz not null default now()
 );
 
